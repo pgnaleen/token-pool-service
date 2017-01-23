@@ -37,13 +37,16 @@ DB can be created through running the script which in result will create schema 
 
 DB consists mainly of owner and token details with event tracking. The description for each attribute can be found at  /design/ERD_doc.pdf
 
-2.2.1 Owner :
+#### 2.2.1 Owner :
 
 In a scenario of “Hub” needs to trigger api calls at operator it need to have a valid operator generated access-token/refresh token at hub. Then using the above access token hub can trigger southbound /operator apis.In this scenario the “who” is operator name.
 
 One owner can have only one valid token per each tokenauth in ‘tsttoken’ table.
 
 There should be at least one record in ‘tsxwho’ table in order to start this server. Or otherwise the server will terminate along with exception throwing namely “Unable to start the server. TPS0006:No Valid token owner defined at the db”
+
+##### 2.2.1.1 Attribute definitions:
+defaultconnectionresettime: Token release time once the token  issued from the token pool
 
 Sample Insertion SQL:
 
