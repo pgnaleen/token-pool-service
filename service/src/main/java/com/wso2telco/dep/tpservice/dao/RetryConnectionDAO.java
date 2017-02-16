@@ -35,9 +35,7 @@ public class RetryConnectionDAO {
                     .bind("tsxwhodid", tsxwhodid)
                     .first();
              retryConnect = new RetryConnectionDTO();
-
-
-            retryConnect = getRetryConDTOFrmResultmap(resultEmail);
+             retryConnect = getRetryConDTOFrmResultmap(resultEmail);
 
             if(retryConnect == null)
             {
@@ -68,11 +66,7 @@ public class RetryConnectionDAO {
             retryConDTO.setRetryAttemptCount(retryAttmptCount);
             retryConDTO.setRetryMax(retryMax);
             retryConDTO.setRetryDelay(retryDelay);
-             retryConDTO.setTokenUrl(tokenUrl);
-
-
-
-
+            retryConDTO.setTokenUrl(tokenUrl);
         }
         return retryConDTO;
     }

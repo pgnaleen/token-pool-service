@@ -99,8 +99,8 @@ class MasterModeTp extends AbstrController {
                 //regenarator.reGenarate(whoDTO, tokenDTO);
 
                 try {
-                   // Thread.sleep(delay);
-                    Thread.sleep(100);
+                    Thread.sleep(delay);
+                    //Thread.sleep(100);
                 } catch (InterruptedException e1) {
                     throw new TokenException(GenaralError.INTERNAL_SERVER_ERROR);
                 }
@@ -117,7 +117,7 @@ class MasterModeTp extends AbstrController {
               //  log.debug("Enter the catch"+code);
                 //do the mailng,
 
-                    boolean flag = sendEmails(Constants.EmailTypes.TYPE_CREDENTIALS);
+				boolean flag = sendEmails(Constants.EmailTypes.TYPE_CREDENTIALS);
                 throw new TokenException(TokenException.TokenError.INVALID_REFRESH_CREDENTIALS);
 
 			}

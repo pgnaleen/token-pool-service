@@ -33,7 +33,7 @@ public class EmailManager {
     {
 
         boolean flag = false;
-        String to = "bimlamadhavee@gmail.com";
+
         configReader = ConfigReader.getInstance();
         ConfigDTO configDTO = configReader.getConfigDTO();
         String from = configDTO.getEmailUsername();

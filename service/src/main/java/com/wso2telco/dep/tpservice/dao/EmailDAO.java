@@ -29,8 +29,6 @@ public class EmailDAO {
         DBI dbi = JDBIUtil.getInstance();
         Handle h = dbi.open();
 
-        //String check = h.toString();
-
         try
         {
             StringBuilder build = new StringBuilder();
@@ -68,8 +66,6 @@ public class EmailDAO {
             int emailId = (Integer) resultsMap.get("idtstemail");
             int whoId = (Integer) resultsMap.get("tsxwhodid");
             String emailAddress = (String) resultsMap.get("tstmailaddr");
-
-
             emaildto.setEmailAddress(emailAddress);
             emaildto.setWhoId(whoId);
             emaildto.setEmailId(emailId);
