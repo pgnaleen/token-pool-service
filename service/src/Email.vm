@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Warning</title>
+</head>
+<body>
+<table>
+  <tr>
+     <td align="center">
+         <font size="7" color="red">Token Regeneration has been stopped  </font>  
+     </td>
+  </tr>
+
+  <tr>
+    <td align="left">
+      
+          Dear Customer,
+    </td>
+
+  </tr>
+      <tr>
+        
+        <td bgcolor="yellow">
+          Your tokens are not regenerated due to <b><font size="5"><font color="red">$EmailType</font></font></b></br>
+          Please check the details.
+        </td>
+      </tr>
+
+      <tr>
+     <td align="center">Bay 9, Wso2.Telco
+
+     </td>
+      </tr>
+      
+
+</table>
+
+</body>
+</html>

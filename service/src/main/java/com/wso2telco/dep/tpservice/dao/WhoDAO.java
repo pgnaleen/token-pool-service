@@ -35,7 +35,7 @@ import com.wso2telco.dep.tpservice.util.exception.TokenException.TokenError;
 public class WhoDAO {
 
 	private static Logger log = LoggerFactory.getLogger(WhoDAO.class);
-
+    public static int retryAttmptCount = 0;
 	 
 	public ArrayList<WhoDTO> getAllOwners() throws SQLException {
 		ArrayList<WhoDTO> ownersList = new ArrayList<WhoDTO>();
@@ -74,6 +74,9 @@ public class WhoDAO {
 			boolean isValid = (Boolean)resultsMap.get("isvalid");
 			Timestamp createdDate = (Timestamp)resultsMap.get("createddate");
 			int uc = (Integer)resultsMap.get("uc");
+            int retryAttmpt = (Integer)resultsMap.get("reattmptcount");
+            int retryMax = (Integer)resultsMap.get("retrymax");
+            int retryDelay = (Integer) resultsMap.get("retrydelay");
 
 			whoDTO.setId(id);
 			whoDTO.setOwnerId(ownerId);
@@ -82,10 +85,25 @@ public class WhoDAO {
 			whoDTO.setValid(isValid);
 			whoDTO.setCreatedDate(createdDate.getTime());
 			whoDTO.setUc(uc);
+			whoDTO.setRetryAttmpt(retryAttmpt);
+			whoDTO.setMaxRetryCoutn(retryMax);
+			whoDTO.setretryDelay(retryDelay);
 		} else {
 			//resultsMap is null
 		}
 		return whoDTO;
+	}
+
+
+
+	public int getRetryAttempt(final String ownerid) {
+	return  0;
+	}
+	public int incrimentRetryAttempt(final String ownerid) {
+		/*int retryAttempt = getRetryAttempt(ownerid);
+		retryAttempt += 1;*/
+		 return retryAttmptCount +=1;
+
 	}
 
 	public WhoDTO getOwner(String ownerid) {

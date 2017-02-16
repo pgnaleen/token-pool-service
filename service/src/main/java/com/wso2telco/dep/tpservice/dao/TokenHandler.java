@@ -31,6 +31,8 @@ abstract class TokenHandler implements GetHandle{
 	abstract PersistableToken  tokenPersister();/* =getHandle().attach(PersistableToken.class);*/
 	@CreateSqlObject
 	abstract PersistableEvent  persistableEvent(); /*= getHandle().attach(PersistableEvent.class);*/
+	@CreateSqlObject
+	abstract PersistableWho persistableWho();
 	final static String CREATE_NEW_TOKEN="CREATE_NEW_TOKEN";
 	final static String EXPIRE_TOKEN="INVALIDATE_TOKEN";
 	
@@ -43,6 +45,7 @@ abstract class TokenHandler implements GetHandle{
 	
 	public int createNewToken(final TokenDTO newTokenDTO,final WhoDTO whoDTO){
 		int newTokenDid=0;
+		persistableWho().resetReTryAttemts(whoDTO.getId());
 		if(newTokenDTO.getParentTokenId()==0){
 			newTokenDid= tokenPersister().inset(whoDTO.getId(), newTokenDTO.getTokenAuth(), 
 								newTokenDTO.getTokenValidity(), Boolean.TRUE,
@@ -54,6 +57,8 @@ abstract class TokenHandler implements GetHandle{
 			newTokenDid=tokenPersister().inset(whoDTO.getId(), newTokenDTO.getTokenAuth(), 
 					newTokenDTO.getTokenValidity(), Boolean.TRUE,
 					newTokenDTO.getAccessToken(), newTokenDTO.getRefreshToken(),newTokenDTO.getParentTokenId());
+
+
 		}
 		
 		persistableEvent().insert(CREATE_NEW_TOKEN, newTokenDTO.getAccessToken()+"|"+newTokenDTO.getRefreshToken(), Event.SAVED_TOKEN.getKey(), Status.REGENERATE_TOKEN_SAVE.getKey());

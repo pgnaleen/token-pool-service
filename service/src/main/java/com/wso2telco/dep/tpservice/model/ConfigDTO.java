@@ -45,9 +45,32 @@ public class ConfigDTO extends Configuration implements Serializable{
 	
 	@JsonProperty
 	private long refreshWakeUpLeadTime=5000;
-	
-	
-	
+
+	@JsonProperty
+	private  String emailUsername = "nadiajoy1985";
+
+	@JsonProperty
+	private  String emailPassword = "1234nadia";
+
+
+	public String getEmailUsername() {
+		return emailUsername;
+	}
+
+	public void setEmailUsername(String emailUsername) {
+		this.emailUsername = emailUsername;
+	}
+
+	public String getEmailPassword()
+	{
+		return emailPassword;
+	}
+
+	public void setEmailPassword(String emailPassword)
+	{
+		this.emailPassword = emailPassword;
+	}
+
 	public long getRefreshWakeUpLeadTime() {
 		return refreshWakeUpLeadTime;
 	}

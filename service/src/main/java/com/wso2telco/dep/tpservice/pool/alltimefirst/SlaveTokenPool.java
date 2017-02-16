@@ -16,6 +16,8 @@
 
 package com.wso2telco.dep.tpservice.pool.alltimefirst;
 
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.slf4j.LoggerFactory;
 
 import com.wso2telco.dep.tpservice.model.ConfigDTO;
@@ -69,4 +71,9 @@ class SlaveTokenPool extends AbstrController {
 		}
 		return newTokenDTO; 
 	}
+
+	/*@Override
+	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+
+	}*/
 }
