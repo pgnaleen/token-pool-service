@@ -7,12 +7,12 @@
 <table>
   <tr>
      <td align="center">
-         <font size="7" color="red">Token Regeneration has been stopped  </font>  
+         <font size="5" color="red">Token Regeneration has been stopped  </font>  
      </td>
   </tr>
 
   <tr>
-    <td align="left">
+    <td align="left" cellpadding="20" height="50">
       
           Dear Customer,
     </td>
@@ -20,14 +20,14 @@
   </tr>
       <tr>
         
-        <td bgcolor="yellow">
-          Your tokens are not regenerated due to <b><font size="5"><font color="red">$EmailType</font></font></b></br>
+        <td bgcolor="#e5e5e5" cellpadding="20" height="100">
+          Your tokens are not regenerated due to <b><font size="5"><font color="red">$EmailType</font></font></b>
           Please check the details.
         </td>
       </tr>
 
       <tr>
-     <td align="center">Bay 9, Wso2.Telco
+     <td align="center" cellpadding="20" height="50">Bay 9, Trace Avenue City,Wso2.Telco
 
      </td>
       </tr>
