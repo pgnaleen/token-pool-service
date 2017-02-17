@@ -326,24 +326,7 @@ abstract class AbstrController implements TokenControllable{
 	}
 
 
-	public boolean sendEmails(Constants.EmailTypes type)
-	{
-		emailMangr = new EmailManager();
-		boolean flag = false;
-		if(type == Constants.EmailTypes.TYPE_SERVER)
-		{
-           String emailId = String.valueOf(whoDTO.getId());
-           String Etype = String.valueOf(Constants.EmailTypes.TYPE_SERVER);
-           flag = emailMangr.sendEmail(emailId, String.valueOf(Constants.EmailTypes.TYPE_SERVER));
-		}
-		if(type == Constants.EmailTypes.TYPE_CREDENTIALS)
-		{
-            int number =whoDTO.getId();
-			//flag = emailMangr.sendEmail(String.valueOf(emailDTO.getWhoId()), String.valueOf(Constants.EmailTypes.TYPE_CREDENTIALS));
-			flag = emailMangr.sendEmail(" "+number, String.valueOf(Constants.EmailTypes.TYPE_CREDENTIALS));
-		}
-		return flag;
-	}
+
 
 
 

@@ -19,6 +19,7 @@ package com.wso2telco.dep.tpservice.pool.alltimefirst;
 import com.wso2telco.dep.tpservice.dao.RetryConnectionDAO;
 import com.wso2telco.dep.tpservice.dao.WhoDAO;
 import com.wso2telco.dep.tpservice.manager.ConnectionManager;
+import com.wso2telco.dep.tpservice.manager.EmailManager;
 import com.wso2telco.dep.tpservice.model.RetryConnectionDTO;
 import com.wso2telco.dep.tpservice.util.Constants;
 import com.wso2telco.dep.tpservice.util.exception.ThrowableError;
@@ -37,6 +38,8 @@ class MasterModeTp extends AbstrController {
 	private TokenReGenarator regenarator;
 	RetryConnectionDTO retryDTO;
 	RetryConnectionDAO retryDAO;
+
+	protected EmailManager manager;
 	protected MasterModeTp(WhoDTO whoDTO,TokenDTO tokenDTO) throws TokenException {
 		super(whoDTO,tokenDTO);
 		log = LoggerFactory.getLogger(MasterModeTp.class);
@@ -68,6 +71,8 @@ class MasterModeTp extends AbstrController {
 		TokenDTO newTokenDTO=null;
 		newTokenDTO = new TokenDTO();
         WhoDAO whodao = new WhoDAO();
+		manager = new EmailManager();
+		String emailId = String.valueOf(whoDTO.getId());
 		try {
 			// generating new token
 	        newTokenDTO = regenarator.reGenarate(whoDTO, tokenDTO);
@@ -82,9 +87,9 @@ class MasterModeTp extends AbstrController {
                // int attCount = whodao.getRetryAttempt(whoDTO.getOwnerId());
 				int attCount = whodao.incrimentRetryAttempt(whoDTO.getOwnerId());
 
-                if(attCount >whoDTO.getMaxRetryCoutn()) {
+                if(attCount >= whoDTO.getMaxRetryCoutn()) {
                     log.error("You have reach the maximum retry attempts");
-                    boolean flag = sendEmails(Constants.EmailTypes.TYPE_SERVER);
+					manager.sendEmail(""+emailId,String.valueOf(Constants.EmailTypes.TYPE_SERVER));
                     throw new TokenException(TokenException.TokenError.REACH_MAX_RETRY_ATTEMPT);
 
                 }
@@ -99,8 +104,8 @@ class MasterModeTp extends AbstrController {
                 //regenarator.reGenarate(whoDTO, tokenDTO);
 
                 try {
-                    Thread.sleep(delay);
-                    //Thread.sleep(100);
+                   Thread.sleep(delay);
+
                 } catch (InterruptedException e1) {
                     throw new TokenException(GenaralError.INTERNAL_SERVER_ERROR);
                 }
@@ -113,11 +118,8 @@ class MasterModeTp extends AbstrController {
 
 			}else {
 
-               // TokenException.TokenError code = TokenException.TokenError.CONNECTION_LOSS;
-              //  log.debug("Enter the catch"+code);
-                //do the mailng,
+				     manager.sendEmail(""+emailId,String.valueOf(Constants.EmailTypes.TYPE_CREDENTIALS));
 
-				boolean flag = sendEmails(Constants.EmailTypes.TYPE_CREDENTIALS);
                 throw new TokenException(TokenException.TokenError.INVALID_REFRESH_CREDENTIALS);
 
 			}
