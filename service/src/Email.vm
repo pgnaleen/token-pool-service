@@ -21,7 +21,7 @@
       <tr>
         
         <td bgcolor="#e5e5e5" cellpadding="20" height="100">
-          Your tokens are not regenerated due to <b><font size="5"><font color="red">$EmailType</font></font></b>
+          Token generation failed due to <b><font size="5"><font color="red">$EmailType</font></font></b>
           Please check the details.
         </td>
       </tr>
