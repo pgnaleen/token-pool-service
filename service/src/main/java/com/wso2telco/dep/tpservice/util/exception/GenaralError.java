@@ -8,6 +8,7 @@ public enum GenaralError implements ThrowableError {
 	INTERNAL_SERVER_ERROR("TP0002", "Internal Server Error"),
 	INPUT_PARAMETER_ERROR("TP0003", "Input Parameter Error");
 
+
 	private String code;
 	private String desc;
 

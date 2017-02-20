@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
@@ -34,6 +35,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.Response.Status;
 
+import com.wso2telco.dep.tpservice.conf.Appinitializer;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,6 +182,7 @@ public class TokenReGenarator {
 					Integer.toString(postDataLength));
 			connection.setUseCaches(false);
 
+
 			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
 			wr.write(postData);
 			wr.flush();
@@ -198,13 +201,28 @@ public class TokenReGenarator {
 			while ((output = br.readLine()) != null) {
 				retStr.append(output);
 			}
-		} catch (Exception e) {
+		}
+		catch(ConnectException e)
+		{
+			log.error("TokenReGenarator , makerequest(), ", e);
+
+			throw new TokenException(TokenError.CONNECTION_LOSS);
+		}
+
+		catch (Exception e) {
 			log.error("TokenReGenarator , makerequest(), ", e);
 			throw new TokenException(TokenError.TOKEN_REGENERATE_FAIL);
 		} finally {
 			try {
-				br.close();
+				if(br!=null){
+
+					br.close();
+
+				}
+
 			} catch (IOException e) {
+
+
 			}
 
 			if (connection != null) {

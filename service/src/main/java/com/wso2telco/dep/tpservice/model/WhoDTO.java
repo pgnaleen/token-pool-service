@@ -41,6 +41,17 @@ public class WhoDTO implements Serializable {
 	private long createdDate;
 	
 	private int uc;
+	private int maxRetryCoutn;
+    private  int retryDelay;
+	private  int retryAttmpt;
+	public int getRetryAttmpt() {
+		return retryAttmpt;
+	}
+
+	public void setRetryAttmpt(int retryAttmpt) {
+		this.retryAttmpt = retryAttmpt;
+	}
+
 
 	public int getId() {
 		return id;
@@ -99,11 +110,27 @@ public class WhoDTO implements Serializable {
 	}
 
 	@Override
+
 	public String toString() {
 		return "WhoDTO [id=" + id + ", ownerId=" + ownerId + ", tokenUrl=" + tokenUrl + ", defaultConnectionRestTime="
-				+ defaultConnectionRestTime + ", valid=" + valid + ", createdDate=" + createdDate + ", uc=" + uc + "]";
+				+ defaultConnectionRestTime + ", valid=" + valid + ", createdDate=" + createdDate + ", uc=" + uc + ",reattmptcount="+retryAttmpt+",retrymax="+maxRetryCoutn+",retrydelay="+retryDelay+"]";
 	}
-	
-	
-	
+
+
+    public int getMaxRetryCoutn() {
+        return maxRetryCoutn;
+    }
+
+    public void setMaxRetryCoutn(int maxRetryCoutn)
+	{
+		this.maxRetryCoutn = maxRetryCoutn;
+	}
+
+	public int getRetryDelay() {
+		return retryDelay;
+	}
+	public void setretryDelay(int retryDelay)
+	{
+		this.retryDelay = retryDelay;
+	}
 }

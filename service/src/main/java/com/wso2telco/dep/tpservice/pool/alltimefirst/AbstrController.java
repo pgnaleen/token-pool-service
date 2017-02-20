@@ -15,25 +15,36 @@
  */
 
 package com.wso2telco.dep.tpservice.pool.alltimefirst;
-
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.net.ssl.HttpsURLConnection;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
 
+//import com.wso2telco.dep.tpservice.dao.EmailDAO;
+import com.wso2telco.dep.tpservice.dao.RetryConnectionDAO;
+import com.wso2telco.dep.tpservice.manager.ConnectionManager;
+import com.wso2telco.dep.tpservice.manager.EmailManager;
+import com.wso2telco.dep.tpservice.model.*;
+import com.wso2telco.dep.tpservice.util.Constants;
+import org.slf4j.Logger;
 import com.wso2telco.dep.tpservice.conf.ConfigReader;
 import com.wso2telco.dep.tpservice.manager.TokenManager;
-import com.wso2telco.dep.tpservice.model.ConfigDTO;
-import com.wso2telco.dep.tpservice.model.TokenDTO;
-import com.wso2telco.dep.tpservice.model.WhoDTO;
 import com.wso2telco.dep.tpservice.pool.TokenControllable;
 import com.wso2telco.dep.tpservice.util.exception.GenaralError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
 
-abstract class AbstrController implements TokenControllable {
+
+abstract class AbstrController implements TokenControllable{
 	protected Logger log;
 	protected ConfigReader configReader;
 	protected WhoDTO whoDTO;
@@ -41,8 +52,10 @@ abstract class AbstrController implements TokenControllable {
 	protected TokenDTO tokenDTO;
 	protected SessionHolder sessionHolderList;
 	private ScheduledExecutorService shedulerService;
-	
-	
+	protected EmailManager emailMangr;
+	protected  String whoId;
+
+
 	protected AbstrController(final WhoDTO whoDTO,final TokenDTO tokenDTO) throws TokenException {
 		this.whoDTO = whoDTO;
 		this.tokenDTO = tokenDTO;
@@ -64,11 +77,19 @@ abstract class AbstrController implements TokenControllable {
 		validateToken(token.getAccessToken());
 
 		removeToken( );
-		TokenDTO newtokenDTo = reGenarate();
-		//Swap oldtoken with newly generated one
-		setNewToken(newtokenDTo);
+		TokenDTO newtokenDTo = null;
+		try{
+			newtokenDTo = reGenarate();
+			//Swap oldtoken with newly generated one
+			setNewToken(newtokenDTo);
+
+		}
+		catch(TokenException e)	{
+
+		}
 
 		return newtokenDTo;
+
 	}
 
 	@Override
@@ -108,7 +129,7 @@ abstract class AbstrController implements TokenControllable {
 	 * this will invalidate the token so that the the token will not re issue.
 	 * remove all the scheduled task immediately from the scheduler.
 	 * hold the session until all session getting cleared only if token is not expired ,
-	 * if expired no waiting 
+	 * if expired no waiting
 	 * This only done for locally/not in cluster
 	 * @throws TokenException
 	 */
@@ -178,7 +199,9 @@ abstract class AbstrController implements TokenControllable {
 		return true;
 	}
 
-	protected void shedule() throws TokenException {
+	public void shedule() throws TokenException {
+
+
 		// Timer timer = new Timer();
 		ConfigDTO configDTO = configReader.getConfigDTO();
 
@@ -197,8 +220,10 @@ abstract class AbstrController implements TokenControllable {
 					setNewToken(reGenarate());
 					shedule();// Schedule for next refresh
 
+
 				} catch (TokenException e) {
 					log.error("token sheudle expired - ", e);
+
 				}
 
 			}
@@ -217,22 +242,65 @@ abstract class AbstrController implements TokenControllable {
 	@Override
 	public void init() throws TokenException {
 		log.debug(" Initializing token :" + tokenDTO);
-		
 
-		if (tokenDTO.isExpired()) {// if the token is still valid.if the token
-									// is still valid.
-			log.debug("Initialization token - token is expired :" + tokenDTO);
-			TokenDTO newtokenDTO = reGenarate();
-			setNewToken(newtokenDTO);
-			shedule();// Schedule for next refresh
 
-		} else {// if the token is still valid.
-			log.debug("Initialization token - token is not expired :" + tokenDTO);
 
-			shedule();// Schedule for next refresh
+			if (tokenDTO.isExpired()) {// if the token is still valid.if the token
+				// is still valid.
+				log.debug("Initialization token - token is expired :" + tokenDTO);
+
+				TokenDTO newtokenDTO = reGenarate();
+				setNewToken(newtokenDTO);
+				shedule();// Schedule for next refresh
+
+
+			} else {// if the token is still valid.
+				log.debug("Initialization token - token is not expired :" + tokenDTO);
+
+				shedule();// Schedule for next refresh
+			}
+		/*catch (TokenException e)
+		{
+			/*ThrowableError x = e.getErrorType();
+			if(x.getCode().equals(TokenException.TokenError.CONNECTION_LOSS)){
+				TokenException.TokenError code = TokenException.TokenError.CONNECTION_LOSS;
+				String value = code.getCode();
+				log.error("code value"+value);
+				log.error("Ener the catch"+e);
+				//do the mailng,
+				boolean flag = sendEmails(Constants.EmailTypes.TYPE_SERVER);
+
+				log.error("Mail sent"+flag);
+
+
+				// load retry metadata
+
+
+				//spawn new thred to wakeup for retry
+
+
+			}else {
+
+
+				//do the mailng,
+				int number =whoDTO.getId();
+				String url = whoDTO.getTokenUrl();
+
+				boolean flag = sendEmails(Constants.EmailTypes.TYPE_CREDENTIALS);
+
+				conManager = new ConnectionManager();
+				if(conManager ==null)
+				{
+					log.error("conManager is null");
+				}
+                      boolean flagRetry = conManager.reConnectivity(""+url,""+number);
+
+
+
+			}*/
 		}
 
-	}
+
 
 	@Override
 	public void stop() throws TokenException {
@@ -256,5 +324,10 @@ abstract class AbstrController implements TokenControllable {
 		sessionHolderList.acquireSession();
 		
 	}
-	
+
+
+
+
+
+
 }

@@ -28,5 +28,7 @@ public interface TokenControllable {
 			void stop()throws TokenException ;
 			TokenDTO getToken()throws TokenException ;
 			void accqureToken() throws TokenException ;
+			void shedule() throws TokenException;
+		//	void executeShedule() throws TokenException;
 
 }

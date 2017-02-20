@@ -1,8 +1,9 @@
 package com.wso2telco.dep.tpservice.util;
 
 public class Constants {
-	
-	public static final String CONTEXT_TOKEN="TOKEN"; 
+
+	public static final String CONTEXT_TOKEN="TOKEN";
+
 	public enum AuthMethod{
 		BASIC("Basic ");
 		private final String value;
@@ -19,8 +20,9 @@ public class Constants {
 	public enum Tables {
 		TABLE_TSXWHO("tsxwho"),
 		TABLE_TSTTOKEN("tsttoken"),
-		TABLE_TSTEVENT("tstevent");
-		
+		TABLE_TSTEVENT("tstevent"),
+		TABLE_TSTEMAIL("tstemail");
+
 		private final String value;
         
 		Tables(String val) {
@@ -66,5 +68,25 @@ public class Constants {
 		public String getValue() {
 			return value;
 		}
+	}
+
+
+	public enum EmailTypes{
+
+		TYPE_SERVER("Connection error.Check your server"),
+		TYPE_CREDENTIALS("invalid credentials.Enter a valid token");
+
+		private final String value;
+		EmailTypes(String val)
+		{
+			value = val;
+		}
+
+		public  String toString()
+		{
+			return  value;
+		}
+
+
 	}
 }

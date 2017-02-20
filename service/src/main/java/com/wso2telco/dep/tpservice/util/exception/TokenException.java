@@ -47,7 +47,9 @@ public class TokenException extends BusinessException {
 		INVALID_REFRESH_CREDENTIALS("TPS0021"," Invalid credentials passed for Token Regeneration "),
 		SHEDULED_TIME_ALREADY_EXPIERD("TPS0022","Scheduled  time already expired"),
 		INVALID_OPARATION("TPS0023","Token pool not initialized for this owner"),
-		NULL_TOKEN("TPS0024","Token DTO NOT YET ASSIGNED")
+		NULL_TOKEN("TPS0024","Token DTO NOT YET ASSIGNED"),
+		CONNECTION_LOSS("TPS0025", "Can't be connected to the server"),
+		REACH_MAX_RETRY_ATTEMPT("TPS0026", "Reach maximum retry attempt")
 		;
 		
 		TokenError(final String coded,final String msgf){
