@@ -27,8 +27,11 @@ import org.skife.jdbi.v2.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wso2telco.dep.tpservice.model.EmailDTO;
 import com.wso2telco.dep.tpservice.model.WhoDTO;
 import com.wso2telco.dep.tpservice.util.Constants.Tables;
+import com.wso2telco.dep.tpservice.util.exception.BusinessException;
+import com.wso2telco.dep.tpservice.util.exception.GenaralError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
 import com.wso2telco.dep.tpservice.util.exception.TokenException.TokenError;
 
@@ -133,6 +136,27 @@ public class WhoDAO {
 		}
 		return returnWhoDto;
 	}
+	
+	
+	
+	 public List<EmailDTO> getEmailAddress(final Integer tsxwhodid) throws BusinessException{
+
+	        List<EmailDTO> emailList  = null;
+	        DBI dbi = JDBIUtil.getInstance();
+	        try {
+	        	
+	        	PersistableWho h = dbi.open(PersistableWho.class);
+	        	emailList = h.loadSenderList(tsxwhodid);
+	        	
+
+	        } catch(Exception ex)  {
+	        	
+	           throw new TokenException(GenaralError.INTERNAL_SERVER_ERROR);
+	        }
+
+	        return emailList;
+	    }
+	 
 }
 	
 	

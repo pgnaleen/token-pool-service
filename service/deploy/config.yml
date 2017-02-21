@@ -37,3 +37,11 @@ logging:
       archivedLogFilenamePattern: log/token_service-%d.log #<path to log file >/< archive filename.log>
       archivedFileCount: 5
       timeZone: UTC
+tslMailConfig:
+  port: 587 #587
+  username: 
+  password: 
+  isStarttlsEnable: true
+  host: 
+  isAuth: true
+  from:

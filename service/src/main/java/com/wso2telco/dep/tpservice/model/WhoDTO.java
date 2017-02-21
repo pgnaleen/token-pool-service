@@ -117,7 +117,7 @@ public class WhoDTO implements Serializable {
 	}
 
 
-    public int getMaxRetryCoutn() {
+    public int getMaxRetryCount() {
         return maxRetryCoutn;
     }
 

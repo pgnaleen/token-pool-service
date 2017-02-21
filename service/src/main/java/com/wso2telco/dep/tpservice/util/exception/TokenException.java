@@ -49,7 +49,9 @@ public class TokenException extends BusinessException {
 		INVALID_OPARATION("TPS0023","Token pool not initialized for this owner"),
 		NULL_TOKEN("TPS0024","Token DTO NOT YET ASSIGNED"),
 		CONNECTION_LOSS("TPS0025", "Can't be connected to the server"),
-		REACH_MAX_RETRY_ATTEMPT("TPS0026", "Reach maximum retry attempt")
+		REACH_MAX_RETRY_ATTEMPT("TPS0026", "Reach maximum retry attempt"),
+		EMPTY_SENDER_LIST("TPS0027", "Sender mail list not defined"),
+		EMAIL_SENDING_FAIL("TPS0028", "Email sending fail")
 		;
 		
 		TokenError(final String coded,final String msgf){
