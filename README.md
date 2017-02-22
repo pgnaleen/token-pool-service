@@ -51,7 +51,7 @@ defaultconnectionresettime: Token release time once the token  issued from the t
 Sample Insertion SQL:
 
 ```
-“ INSERT INTO `tsxwho` (`ownerid`, `tokenurl`, `defaultconnectionresettime`, `isvalid`) VALUES ('owner2', 'https://localhost:8243/token', '4000', 1);”
+“ INSERT INTO `tsxwho` (`ownerid`, `tokenurl`, `defaultconnectionresettime`, `isvalid`, `reattmptcount`, `retrymax`, `retrydelay` ) VALUES ('owner2', 'https://localhost:8243/token', '4000', 1, <re-attmpt count>, <re-try max>, <re-try delay>);”
 ``` 
 2.2.2 token :
 
@@ -93,7 +93,7 @@ Built-in default is an HTTP connector listening on port 8181, override if needed
 The hostname to bind to.
  
 
-#### 2.3.3 Log configuration  
+#### 2.3.3 Log Configuration  
   
 
 - Level:
@@ -139,8 +139,23 @@ Must be between 1 and 50.
 -- logFormat: 
 Logback pattern with which events will be formatted.  
 
+#### 2.3.4 Email Notification Configuration:
 
-#### 2.3.4 Others:
+- port: Standard SMTP port
+
+- username: Username of the Email
+
+- password: Password of the Email
+
+- isStarttlsEnable: Enable or disable starttls
+
+- host: Host address of the Email
+
+- isAuth: SMTP authentication enble or disable
+
+- from: Which email address used for send emails
+
+#### 2.3.5 Others:
   
 - waitingTimeForToken: 
 Maximum waiting time to obtain a token from the pool in milliseconds.
@@ -180,7 +195,7 @@ This fat jar is a jar file that contains token pool microservice as well as all 
 In order to get the service up and running, execute the following command.
 
 ```
-java -jar target/token-pool-service-1.0.0-SNAPSHOT.jar server deploy/config.yml
+java -jar target/token-pool-service-1.2.0-SNAPSHOT.jar server deploy/config.yml
 ```
 
 ## 6. Features 
@@ -229,5 +244,10 @@ This will enable the regeneration process of access token using the existing ref
 In order to retrieve Swagger definitions of this microservice, go to http://&lt;host&gt;:&lt;port&gt;/swagger?path=&lt;service_base_path&gt;.
 
 For example [http://localhost:8181/swagger?path=tokenservice](http://localhost:8181/swagger?path=tokenservice)  in default configuration.
+
+### 6.3 Email Notifications 
+
+Email notification is genarated according to the configurations when have wrong credentials and server connection lost.  
+
 ### 7 Limitations
  HA not supported. Only single master node allowed to start.
