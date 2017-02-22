@@ -1,8 +1,5 @@
 package com.wso2telco.dep.tpservice.model;
 
-/**
- * Created by wso2telco(bmla) on 1/30/17.
- */
 public class EmailDTO {
 
     private int whoId ;

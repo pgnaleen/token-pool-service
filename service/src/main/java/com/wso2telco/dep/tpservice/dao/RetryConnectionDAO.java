@@ -1,6 +1,5 @@
 package com.wso2telco.dep.tpservice.dao;
 
-import com.wso2telco.dep.tpservice.model.EmailDTO;
 import com.wso2telco.dep.tpservice.model.RetryConnectionDTO;
 import com.wso2telco.dep.tpservice.util.Constants;
 import org.skife.jdbi.v2.DBI;
@@ -10,9 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-/**
- * Created by wso2telco(Bmla) on 2/8/17.
- */
 public class RetryConnectionDAO {
 
     protected RetryConnectionDTO retryConDTO;

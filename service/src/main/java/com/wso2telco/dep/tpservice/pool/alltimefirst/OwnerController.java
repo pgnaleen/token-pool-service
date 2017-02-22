@@ -16,14 +16,6 @@
 
 package com.wso2telco.dep.tpservice.pool.alltimefirst;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.wso2telco.dep.tpservice.conf.ConfigReader;
 import com.wso2telco.dep.tpservice.manager.WhoManager;
 import com.wso2telco.dep.tpservice.model.ConfigDTO;
@@ -34,6 +26,11 @@ import com.wso2telco.dep.tpservice.pool.TokenControllable;
 import com.wso2telco.dep.tpservice.pool.TokenPool;
 import com.wso2telco.dep.tpservice.util.exception.GenaralError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * All Time First - pool implementation issue pool which always return first valid
@@ -165,21 +162,28 @@ class OwnerController implements OwnerControllable  {
 
 	public void reStart(WhoDTO whoDTO) throws TokenException {
 		//If token there is no token controllers the request is invalid
-		if(poolImplList.isEmpty()){
-			throw new TokenException( TokenException.TokenError.INVALID_OPARATION);
+		if(!poolImplList.isEmpty()){
+
+			//Stop the existing token controllers
+			for (TokenControllable tokenPoolImplimentable : poolImplList) {
+				tokenPoolImplimentable.stop();
+			}
+
+			//Clear old token controllers
+			poolImplList.clear();
+
 		}
 		
 		this.whoDTO.setDefaultConnectionRestTime( whoDTO.getDefaultConnectionRestTime());
 		this.whoDTO.setTokenUrl(whoDTO.getTokenUrl());
-		
-		//Stop the existing token controllers
-		for (TokenControllable tokenPoolImplimentable : poolImplList) {
-			tokenPoolImplimentable.stop();
-		}
-		//Clear old token controllers
-		poolImplList.clear();
-		
+
 		List<TokenDTO> tokenDTos = adminService.loadTokens(whoDTO.getOwnerId());
+
+		if (tokenDTos==null || tokenDTos.isEmpty()){
+			log.error("No active token found");
+			throw new TokenException( TokenException.TokenError.NO_VALIDE_TOKEN_FOUND);
+		}
+
 		for (TokenDTO tokenDTO : tokenDTos) {
 			log.debug("reStart the token ");
 			TokenControllable poolImpl = createImplimenter(tokenDTO);

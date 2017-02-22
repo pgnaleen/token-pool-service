@@ -1,14 +1,13 @@
 package com.wso2telco.dep.tpservice.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import com.wso2telco.dep.tpservice.model.EmailDTO;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-import com.wso2telco.dep.tpservice.model.EmailDTO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-class MailMapper implements ResultSetMapper<EmailDTO> {
+public class MailMapper implements ResultSetMapper<EmailDTO> {
 
 	@Override
 	public EmailDTO map(int index, ResultSet r, StatementContext ctx) throws SQLException {

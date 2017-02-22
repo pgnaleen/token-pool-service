@@ -16,17 +16,6 @@
 
 package com.wso2telco.dep.tpservice.dao;
 
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.wso2telco.dep.tpservice.model.EmailDTO;
 import com.wso2telco.dep.tpservice.model.WhoDTO;
 import com.wso2telco.dep.tpservice.util.Constants.Tables;
@@ -34,6 +23,16 @@ import com.wso2telco.dep.tpservice.util.exception.BusinessException;
 import com.wso2telco.dep.tpservice.util.exception.GenaralError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
 import com.wso2telco.dep.tpservice.util.exception.TokenException.TokenError;
+import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.Handle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class WhoDAO {
 
@@ -150,6 +149,7 @@ public class WhoDAO {
 	        	
 
 	        } catch(Exception ex)  {
+	        	ex.printStackTrace();
 	        	
 	           throw new TokenException(GenaralError.INTERNAL_SERVER_ERROR);
 	        }

@@ -16,18 +16,17 @@
 
 package com.wso2telco.dep.tpservice.pool.alltimefirst;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.wso2telco.dep.tpservice.model.SessionDTO;
 import com.wso2telco.dep.tpservice.model.TokenDTO;
 import com.wso2telco.dep.tpservice.model.WhoDTO;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SessionHolder {
 	
@@ -74,7 +73,7 @@ public class SessionHolder {
 		dto.setTokenDTO(tokenDTO);
 		dto.setCreatedTimeInMl(System.currentTimeMillis());
 		synchronized (tokenSessions) {
-			log.debug("Token"+ tokenDTO+" acuire from the pool ");
+			log.debug("Token"+ tokenDTO+" acquire from the pool ");
 			tokenSessions.add( dto);
 		}
 		

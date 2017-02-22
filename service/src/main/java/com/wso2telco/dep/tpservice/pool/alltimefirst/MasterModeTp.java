@@ -18,21 +18,16 @@ package com.wso2telco.dep.tpservice.pool.alltimefirst;
 
 import com.wso2telco.dep.tpservice.dao.RetryConnectionDAO;
 import com.wso2telco.dep.tpservice.dao.WhoDAO;
-import com.wso2telco.dep.tpservice.manager.ConnectionManager;
 import com.wso2telco.dep.tpservice.manager.EmailManager;
 import com.wso2telco.dep.tpservice.model.RetryConnectionDTO;
-import com.wso2telco.dep.tpservice.util.Constants;
-import com.wso2telco.dep.tpservice.util.exception.ThrowableError;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.LoggerFactory;
-
 import com.wso2telco.dep.tpservice.model.TokenDTO;
 import com.wso2telco.dep.tpservice.model.WhoDTO;
 import com.wso2telco.dep.tpservice.pool.TokenReGenarator;
 import com.wso2telco.dep.tpservice.util.exception.BusinessException;
 import com.wso2telco.dep.tpservice.util.exception.GenaralError;
+import com.wso2telco.dep.tpservice.util.exception.ThrowableError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
+import org.slf4j.LoggerFactory;
 
 class MasterModeTp extends AbstrController {
 
@@ -42,7 +37,7 @@ class MasterModeTp extends AbstrController {
 	private  final String MAIL_BODY_CONNECTION_LOSS = "Token genaration failed. Retry attempt :";
 	private final String MAIL_SUBJECT_CONNECTION_LOSS = "[Token Genaration Failed]- Error occurd while connecting to ";
 	
-	private  final String MAIL_BODY_INVALID_CREDENTIALS = "Token genaration failed. Retry attempt :";
+	private  final String MAIL_BODY_INVALID_CREDENTIALS = "Token genaration failed.";
 	private final String MAIL_SUBJECT_INVALID_CREDENTIALS = "[Token Genaration Failed]- Credentials ";
 	private final String MAIL_SUBJECT_END_OF_RETRY =  "The reach the maximum retry attempts reached .Make sure the token endpoint is up and running"
 		+ "Re start the owners token pool manyally.";
