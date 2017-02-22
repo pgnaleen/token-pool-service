@@ -143,8 +143,8 @@ abstract class AbstrController implements TokenControllable{
 
 			if (tokenAlreadyInvalidated) {
 				log.warn("Token already removed from the pool :" + whoDTO + " token :" + tokenDTO);
-
-				throw new TokenException(TokenException.TokenError.TOKEN_ALREDY_REMOVED);
+				return;
+//				throw new TokenException(TokenException.TokenError.TOKEN_ALREDY_REMOVED);
 			} else {
 				tokenDTO.setValid(false);
 			}
