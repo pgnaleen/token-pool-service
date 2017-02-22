@@ -1,11 +1,10 @@
 package com.wso2telco.dep.tpservice.model;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
+
+import java.io.Serializable;
 
 /**
  *
@@ -20,7 +19,8 @@ public class ConfigDTO extends Configuration implements Serializable{
 
 	@JsonProperty
 	private DataSourceFactory database = new DataSourceFactory();
-	
+
+	@JsonProperty
 	private TLSMailConfigDTO tslMailConfig = new TLSMailConfigDTO();
 	
 	/*@JsonProperty

@@ -15,33 +15,22 @@
  */
 
 package com.wso2telco.dep.tpservice.pool.alltimefirst;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.net.ssl.HttpsURLConnection;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-
-//import com.wso2telco.dep.tpservice.dao.EmailDAO;
-import com.wso2telco.dep.tpservice.dao.RetryConnectionDAO;
-import com.wso2telco.dep.tpservice.manager.ConnectionManager;
-import com.wso2telco.dep.tpservice.manager.EmailManager;
-import com.wso2telco.dep.tpservice.model.*;
-import com.wso2telco.dep.tpservice.util.Constants;
-import org.slf4j.Logger;
 import com.wso2telco.dep.tpservice.conf.ConfigReader;
+import com.wso2telco.dep.tpservice.manager.EmailManager;
 import com.wso2telco.dep.tpservice.manager.TokenManager;
+import com.wso2telco.dep.tpservice.model.ConfigDTO;
+import com.wso2telco.dep.tpservice.model.TokenDTO;
+import com.wso2telco.dep.tpservice.model.WhoDTO;
 import com.wso2telco.dep.tpservice.pool.TokenControllable;
 import com.wso2telco.dep.tpservice.util.exception.GenaralError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
+import org.slf4j.Logger;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 abstract class AbstrController implements TokenControllable{
@@ -89,7 +78,6 @@ abstract class AbstrController implements TokenControllable{
 		}
 
 		return newtokenDTo;
-
 	}
 
 	@Override
@@ -167,8 +155,6 @@ abstract class AbstrController implements TokenControllable{
 			}
 
 		}
-		 
-
 	}
 
 	
@@ -259,48 +245,7 @@ abstract class AbstrController implements TokenControllable{
 
 				shedule();// Schedule for next refresh
 			}
-		/*catch (TokenException e)
-		{
-			/*ThrowableError x = e.getErrorType();
-			if(x.getCode().equals(TokenException.TokenError.CONNECTION_LOSS)){
-				TokenException.TokenError code = TokenException.TokenError.CONNECTION_LOSS;
-				String value = code.getCode();
-				log.error("code value"+value);
-				log.error("Ener the catch"+e);
-				//do the mailng,
-				boolean flag = sendEmails(Constants.EmailTypes.TYPE_SERVER);
-
-				log.error("Mail sent"+flag);
-
-
-				// load retry metadata
-
-
-				//spawn new thred to wakeup for retry
-
-
-			}else {
-
-
-				//do the mailng,
-				int number =whoDTO.getId();
-				String url = whoDTO.getTokenUrl();
-
-				boolean flag = sendEmails(Constants.EmailTypes.TYPE_CREDENTIALS);
-
-				conManager = new ConnectionManager();
-				if(conManager ==null)
-				{
-					log.error("conManager is null");
-				}
-                      boolean flagRetry = conManager.reConnectivity(""+url,""+number);
-
-
-
-			}*/
 		}
-
-
 
 	@Override
 	public void stop() throws TokenException {
@@ -324,10 +269,4 @@ abstract class AbstrController implements TokenControllable{
 		sessionHolderList.acquireSession();
 		
 	}
-
-
-
-
-
-
 }

@@ -1,28 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2015-2017, WSO2.Telco Inc. (http://www.wso2telco.com)
+ *
+ * All Rights Reserved. WSO2.Telco Inc. licences this file to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ******************************************************************************/
 package com.wso2telco.dep.tpservice.manager;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.wso2telco.dep.tpservice.conf.ConfigReader;
 import com.wso2telco.dep.tpservice.dao.WhoDAO;
@@ -33,9 +25,21 @@ import com.wso2telco.dep.tpservice.util.exception.BusinessException;
 import com.wso2telco.dep.tpservice.util.exception.GenaralError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
 import com.wso2telco.dep.tpservice.util.exception.TokenException.TokenError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 
-public class EmailManager {
+public  class EmailManager {
 
     protected EmailDTO emailDTO;
     public ConfigReader configReader ;
@@ -43,9 +47,11 @@ public class EmailManager {
     private Session session ;
     private String mailFrom;
     
-    EmailManager(){
-    	TLSMailConfigDTO tLSMailConfigDTO  = configReader.getConfigDTO().getTLSMailConfigDTO();
+  private   EmailManager(){
+    	TLSMailConfigDTO tLSMailConfigDTO  = configReader.getInstance().getConfigDTO().getTLSMailConfigDTO();
     	mailFrom = tLSMailConfigDTO.getFrom();
+
+    	whoDAO = new WhoDAO();
     	
     	Properties props = new Properties();
     	props.put("mail.smtp.auth", tLSMailConfigDTO.isAuth());
@@ -87,7 +93,7 @@ public class EmailManager {
     	
     	try {
     		
-    		List<InternetAddress> senderList = Collections.emptyList();
+    		List<InternetAddress> senderList = new ArrayList<>();
     		
     		List<EmailDTO> rowEmailDTOList = whoDAO.getEmailAddress(tokenOwner.getId());
     		
@@ -121,28 +127,6 @@ public class EmailManager {
 			
 			throw new TokenException(GenaralError.INTERNAL_SERVER_ERROR);
 		}
-    	
-    	
+
     }
-
-
-
-    public String createMessage(String subject)
-    {
-
-        Velocity.init();
-        Template t = Velocity.getTemplate("./src/Email.vm");
-
-        String EmaiType = subject;
-        VelocityContext ctx = new VelocityContext();
-        ctx.put("EmailType",EmaiType);
-         Writer writer = new StringWriter();
-         t.merge(ctx, writer); ;
-        return String.valueOf(writer);
-    }
-
-
- 
-
-
 }
