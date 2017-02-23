@@ -38,9 +38,9 @@
 		<module>bundle</module>
 	</modules>
 	<scm>
-		<url>https://github.com/WSO2Telco/services-dep.git</url>
-		<developerConnection>scm:git:https://github.com/WSO2Telco/services-dep.git</developerConnection>
-		<connection>scm:git:https://github.com/WSO2Telco/services-dep.git</connection>
+		<url>https://github.com/WSO2Telco/token-pool-service.git</url>
+		<developerConnection>scm:git:https://github.com/WSO2Telco/token-pool-service.git</developerConnection>
+		<connection>scm:git:https://github.com/WSO2Telco/token-pool-service.git</connection>
 		<tag>v1_0_0-rc1</tag>
 	</scm>
 	<repositories>
