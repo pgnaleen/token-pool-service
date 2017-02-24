@@ -46,6 +46,7 @@ abstract class TokenHandler implements GetHandle{
 	public int createNewToken(final TokenDTO newTokenDTO,final WhoDTO whoDTO){
 		int newTokenDid=0;
 		persistableWho().resetReTryAttemts(whoDTO.getId());
+        WhoDAO.setRetryAttmptCount(0);
 		if(newTokenDTO.getParentTokenId()==0){
 			newTokenDid= tokenPersister().inset(whoDTO.getId(), newTokenDTO.getTokenAuth(), 
 								newTokenDTO.getTokenValidity(), Boolean.TRUE,

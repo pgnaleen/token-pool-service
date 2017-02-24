@@ -73,7 +73,7 @@ class MasterModeTp extends AbstrController {
 			if (x.getCode().equals(TokenException.TokenError.CONNECTION_LOSS.getCode())) {
 
 				// int attCount = whodao.getRetryAttempt(whoDTO.getOwnerId());
-				int attCount = whodao.incrimentRetryAttempt(whoDTO.getOwnerId());
+				int attCount = whodao.incrimentRetryAttempt(whoDTO.getId());
 
 				try {
 					manager.sendConnectionFailNotification(whoDTO,MAIL_SUBJECT_CONNECTION_LOSS + whoDTO.getOwnerId(), MAIL_BODY_CONNECTION_LOSS+attCount,  e);

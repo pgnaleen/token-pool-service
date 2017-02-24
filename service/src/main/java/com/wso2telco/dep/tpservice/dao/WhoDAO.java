@@ -37,8 +37,13 @@ import java.util.Map;
 public class WhoDAO {
 
 	private static Logger log = LoggerFactory.getLogger(WhoDAO.class);
-    public static int retryAttmptCount = 0;
-	 
+
+	public static int retryAttmptCount = 0;
+
+    public static void setRetryAttmptCount(int retryAttmptCount) {
+        WhoDAO.retryAttmptCount = retryAttmptCount;
+    }
+
 	public ArrayList<WhoDTO> getAllOwners() throws SQLException {
 		ArrayList<WhoDTO> ownersList = new ArrayList<WhoDTO>();
 		DBI dbi = JDBIUtil.getInstance();
@@ -96,16 +101,17 @@ public class WhoDAO {
 		return whoDTO;
 	}
 
-
-
 	public int getRetryAttempt(final String ownerid) {
 	return  0;
 	}
-	public int incrimentRetryAttempt(final String ownerid) {
-		/*int retryAttempt = getRetryAttempt(ownerid);
-		retryAttempt += 1;*/
-		 return retryAttmptCount +=1;
 
+	public int incrimentRetryAttempt(final int ownerid) {
+		DBI dbi = JDBIUtil.getInstance();
+		int incrementRetryAttempt = retryAttmptCount +1;
+		retryAttmptCount = incrementRetryAttempt;
+		PersistableWho persistableWho = dbi.open(PersistableWho.class);
+		persistableWho.incrementReTryAttempts(ownerid, incrementRetryAttempt);
+		return incrementRetryAttempt;
 	}
 
 	public WhoDTO getOwner(String ownerid) {
