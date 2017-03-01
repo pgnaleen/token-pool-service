@@ -146,13 +146,16 @@ class OwnerController implements OwnerControllable  {
 		for (TokenDTO tokenDTO : tokenDTos) {
 			log.debug("Initialize the token ");
 			TokenControllable poolImpl = createImplimenter(tokenDTO);
-			poolImpl.init();
-			this.poolImplList.add( poolImpl);
+			try {
+				poolImpl.init();
+				this.poolImplList.add(poolImpl);
+			}catch (Exception e){
+                log.error(whoDTO.getOwnerId()+" Can not connect to the server");
+				continue;
+			}
 			
 		}
 	}
-	
-
 	/*public TokenPoolImplimentable getTokenPoolImpl ()throws TokenException{
 		if(poolImpl==null){
 			throw new TokenException(TokenException.TokenError.NO_TOKEN_POOL_IMLIMENTATION);
