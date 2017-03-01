@@ -198,7 +198,7 @@ This fat jar is a jar file that contains token pool microservice as well as all 
 In order to get the service up and running, execute the following command.
 
 ```
-java -jar target/token-pool-service-1.1.3.jar server deploy/config.yml
+java -jar target/token-pool-service-x.x.x.jar server deploy/config.yml
 ```
 
 ## 6. Features 
