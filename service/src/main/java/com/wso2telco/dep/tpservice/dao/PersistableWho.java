@@ -15,8 +15,8 @@ public interface PersistableWho {
     @SqlUpdate(" UPDATE tsxwho  SET  reattmptcount = 0   WHERE   tsxwhodid = :tsxwhodid")
     public void resetReTryAttemts( @Bind("tsxwhodid")int tsxwhodid ) ;
 
-    @SqlUpdate(" UPDATE tsxwho  SET  reattmptcount = :attempts   WHERE   tsxwhodid = :tsxwhodid")
-    public void incrementReTryAttempts(@Bind("tsxwhodid")int tsxwhodid, @Bind("attempts")int attempts ) ;
+    @SqlUpdate(" UPDATE tsxwho  SET  reattmptcount =:reattmptcount   WHERE   tsxwhodid = :tsxwhodid")
+    public void incrementReTryAttempts(@Bind("tsxwhodid")int tsxwhodid, @Bind("reattmptcount") int reattmptcount ) ;
 
     @SqlQuery("SELECT idtstemail,tsxwhodid,tstmailaddr from tstemail where tsxwhodid = :tsxwhodid")
     @Mapper(MailMapper.class)

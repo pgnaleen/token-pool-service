@@ -29,8 +29,11 @@ MySQL Server’s time zone setting should be set to UTC time zone as ‘+00:00'
 
 The database script relevant for this service can be found at /dbscripts folder.
 
-DB can be created through running the script which in result will create schema named ‘token_service’ with three tables included namely ‘tstevent’,’tsttoken’ and ’tsxevent’.
+If the token pool Database is going to be set-up for the first time then refer the sql script with the name of baseline.sql
 
+If the existing token pool Database is going to be used then refer the sql script with name of migration upgrade version.
+
+DB can be created through running the script which in result will create schema named ‘token_service’ with three tables included namely ‘tstevent’,’tsttoken’,'tstemail' and ’tsxevent’.
 
 
 ### 2.2 Metadata  
@@ -182,7 +185,7 @@ Default value is 5000 ms
 
 ## 4. Build the Service
 
-Run the following Maven command. This will create the fat jar token-pool-service-1.0.0-SNAPSHOT.jar in the target directory.
+Run the following Maven command. This will create the fat jar token-pool-service-1.1.3.jar in the target directory.
 
 ```
 mvn clean install
@@ -195,7 +198,7 @@ This fat jar is a jar file that contains token pool microservice as well as all 
 In order to get the service up and running, execute the following command.
 
 ```
-java -jar target/token-pool-service-1.2.0-SNAPSHOT.jar server deploy/config.yml
+java -jar target/token-pool-service-1.1.3.jar server deploy/config.yml
 ```
 
 ## 6. Features 
@@ -247,7 +250,13 @@ For example [http://localhost:8181/swagger?path=tokenservice](http://localhost:8
 
 ### 6.3 Email Notifications 
 
-Email notification is genarated according to the configurations when have wrong credentials and server connection lost.  
+Email notification is generated according to the configurations when have wrong credentials and server connection lost.
+
+With this feature able to configure maximum retry attempts as well as time duration within two retry attempts.
+
+Email will be generated each retry attempt and once maximum retry limit reached.
+
+Configured mail address(es) will be received all mails generated.
 
 ### 7 Limitations
  HA not supported. Only single master node allowed to start.

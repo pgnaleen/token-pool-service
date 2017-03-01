@@ -61,7 +61,6 @@ class MasterModeTp extends AbstrController {
 		TokenDTO newTokenDTO = null;
 		newTokenDTO = new TokenDTO();
 		WhoDAO whodao = new WhoDAO();
-		String emailId = String.valueOf(whoDTO.getId());
 		try {
 			// generating new token
 			newTokenDTO = regenarator.reGenarate(whoDTO, tokenDTO);
@@ -71,15 +70,14 @@ class MasterModeTp extends AbstrController {
 		} catch (TokenException e) {
 			ThrowableError x = e.getErrorType();
 			if (x.getCode().equals(TokenException.TokenError.CONNECTION_LOSS.getCode())) {
+				whoDTO.incriseRetryAttmpt();
 
-				// int attCount = whodao.getRetryAttempt(whoDTO.getOwnerId());
-				int attCount = whodao.incrimentRetryAttempt(whoDTO.getId());
+			 whodao.incrimentRetryAttempt(whoDTO.getId(),whoDTO.getRetryAttmpt());
 
 				try {
-					manager.sendConnectionFailNotification(whoDTO,MAIL_SUBJECT_CONNECTION_LOSS + whoDTO.getOwnerId(), MAIL_BODY_CONNECTION_LOSS+attCount,  e);
-				
-				
-				if (attCount >= whoDTO.getMaxRetryCount()) {
+					manager.sendConnectionFailNotification(whoDTO,MAIL_SUBJECT_CONNECTION_LOSS + whoDTO.getOwnerId(), MAIL_BODY_CONNECTION_LOSS+whoDTO.getRetryAttmpt(),  e);
+
+				if (whoDTO.getRetryAttmpt() >= whoDTO.getMaxRetryCount()) {
 					log.error("You have reach the maximum retry attempts :"+whoDTO);
 					manager.sendConnectionFailNotification(whoDTO,MAIL_SUBJECT_CONNECTION_LOSS + whoDTO.getOwnerId(),MAIL_SUBJECT_END_OF_RETRY,  e);
 					throw new TokenException(TokenException.TokenError.REACH_MAX_RETRY_ATTEMPT);
@@ -94,10 +92,7 @@ class MasterModeTp extends AbstrController {
 				int number = whoDTO.getId();
 				String url = whoDTO.getTokenUrl();
 
-				// int maxCount = retryDTO.getRetryMax();
 				int delay = whoDTO.getRetryDelay();
-				attCount += 1;
-				// regenarator.reGenarate(whoDTO, tokenDTO);
 
 				try {
 					Thread.sleep(delay);
