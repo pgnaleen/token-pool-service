@@ -47,7 +47,9 @@ public class WhoDTO implements Serializable {
 	public int getRetryAttmpt() {
 		return retryAttmpt;
 	}
-
+	public int incriseRetryAttmpt() {
+		return retryAttmpt++;
+	}
 	public void setRetryAttmpt(int retryAttmpt) {
 		this.retryAttmpt = retryAttmpt;
 	}

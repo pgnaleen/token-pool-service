@@ -98,7 +98,8 @@ public  class EmailManager {
     		List<EmailDTO> rowEmailDTOList = whoDAO.getEmailAddress(tokenOwner.getId());
     		
     		if(rowEmailDTOList==null || rowEmailDTOList.isEmpty()){
-    			throw new TokenException(TokenError.EMPTY_SENDER_LIST);
+    			log.error("error occurs because of empty email list "+TokenError.EMPTY_SENDER_LIST); ;
+    			return;
     		}
     		
     		for (EmailDTO emailDTO : rowEmailDTOList) {
@@ -124,8 +125,9 @@ public  class EmailManager {
 			System.out.println("Done");
 
 		} catch (MessagingException eMessagingException) {
-			
-			throw new TokenException(GenaralError.INTERNAL_SERVER_ERROR);
+
+    	    log.error("Error occoured when sent emails "+GenaralError.INTERNAL_SERVER_ERROR);
+			return;
 		}
 
     }

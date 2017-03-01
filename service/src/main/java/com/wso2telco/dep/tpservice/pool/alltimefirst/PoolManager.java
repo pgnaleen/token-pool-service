@@ -48,15 +48,24 @@ public class PoolManager implements TokenPoolManagable {
 		if(whoDTOs==null ||whoDTOs.isEmpty()){
 			throw new TokenException(TokenException.TokenError.NO_VALID_ENDPONT);
 		}
+
+		boolean atLeastOneSuccess=false;
 		for (WhoDTO whoDTO : whoDTOs) {
-			
-			OwnerController tS =OwnerController.createInstance(whoDTO);
-			tS.initializePool();
-			
-			
+			OwnerController tS = OwnerController.createInstance(whoDTO);
+			try {
+				tS.initializePool();
+			}catch (Exception e){
+
+				log.error(whoDTO.getOwnerId()+" Can not connect to the server");
+				continue;
+			}
 			tokenPoolMap.put(whoDTO.getOwnerId().trim(), tS);
+			atLeastOneSuccess = true;
 			 
 		}
+		if(!atLeastOneSuccess){
+            throw new TokenException(TokenException.TokenError.POOL_NOT_READY);
+        }
 		log.info("Token pool initialized");
 	}
 

@@ -38,11 +38,7 @@ public class WhoDAO {
 
 	private static Logger log = LoggerFactory.getLogger(WhoDAO.class);
 
-	public static int retryAttmptCount = 0;
 
-    public static void setRetryAttmptCount(int retryAttmptCount) {
-        WhoDAO.retryAttmptCount = retryAttmptCount;
-    }
 
 	public ArrayList<WhoDTO> getAllOwners() throws SQLException {
 		ArrayList<WhoDTO> ownersList = new ArrayList<WhoDTO>();
@@ -105,13 +101,12 @@ public class WhoDAO {
 	return  0;
 	}
 
-	public int incrimentRetryAttempt(final int ownerid) {
+	public  void incrimentRetryAttempt(final int ownerid,final  int retryAttempt ) {
 		DBI dbi = JDBIUtil.getInstance();
-		int incrementRetryAttempt = retryAttmptCount +1;
-		retryAttmptCount = incrementRetryAttempt;
+
 		PersistableWho persistableWho = dbi.open(PersistableWho.class);
-		persistableWho.incrementReTryAttempts(ownerid, incrementRetryAttempt);
-		return incrementRetryAttempt;
+		persistableWho.incrementReTryAttempts(ownerid, retryAttempt);
+
 	}
 
 	public WhoDTO getOwner(String ownerid) {
