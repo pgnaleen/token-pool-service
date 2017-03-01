@@ -185,7 +185,7 @@ Default value is 5000 ms
 
 ## 4. Build the Service
 
-Run the following Maven command. This will create the fat jar token-pool-service-1.1.3.jar in the target directory.
+Run the following Maven command. This will create the fat jar token-pool-service-x.x.x.jar in the target directory.
 
 ```
 mvn clean install
