@@ -150,7 +150,7 @@ class OwnerController implements OwnerControllable  {
 				poolImpl.init();
 				this.poolImplList.add(poolImpl);
 			}catch (Exception e){
-                log.error(whoDTO.getOwnerId()+" Can not connect to the server");
+                log.error(" Error occurred when generating " +tokenDTO.toString());
 				continue;
 			}
 			
