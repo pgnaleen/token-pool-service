@@ -38,7 +38,7 @@ DB can be created through running the script which in result will create schema 
 
 ### 2.2 Metadata
 
-DB consists mainly of owner and token details with event tracking. The description for each attribute can be found at  /design/ERD_doc.pdf
+DB consists mainly of owner, token details with event tracking and notification email addresses. The description for each attribute can be found at  /design/ERD_doc.pdf
 
 #### 2.2.1 Owner :
 
@@ -56,7 +56,7 @@ Sample Insertion SQL:
 ```
 “ INSERT INTO `tsxwho` (`ownerid`, `tokenurl`, `defaultconnectionresettime`, `isvalid`, `reattmptcount`, `retrymax`, `retrydelay` ) VALUES ('owner2', 'https://localhost:8243/token', '4000', 1, <re-attmpt count>, <re-try max>, <re-try delay>);”
 ```
-2.2.2 token :
+#### 2.2.2 token :
 
 All exsisting token need to insert into the "tsttoken".
 
@@ -65,7 +65,15 @@ Sample Insertion SQL:
 ```
 “ insert into tsttoken ( tsxwhodid, tokenauth, tokenvalidity, accesstoken, refreshtoken , isvalid ) values (<owner did>, <tokenauth>, <validity period in ml>, <access token>, <refresh token >,1);”
 ```
+#### 2.2.3 Notification Email Addresses :
 
+If the notification emails needs to be sent when having wrong credentials or server connection lost, then the email addresses to which the notifications should be sent needs to be added againt respective owner in to the tstemail table.
+
+Sample Insertion SQL:
+
+```
+“ insert into tstemail ( idtstemail, tsxwhodid, tstmailaddr) values (<email did>, <owner did>, <email address>);”
+``` 
 
 ### 2.3 Configuration Setup
 
