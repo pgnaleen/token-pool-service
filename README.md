@@ -191,6 +191,8 @@ Used only in slave mode
 The lead time to trigger Token refresh process  before its default validity period expires
 Default value is 5000 ms 
 
+- retryResponseCodes: Default retry happens on connection lost and invalid credentials apart from that retry happens according to this response codes.
+
 ## 4. Build the Service
 
 Run the following Maven command. This will create the fat jar token-pool-service-x.x.x.jar in the target directory.

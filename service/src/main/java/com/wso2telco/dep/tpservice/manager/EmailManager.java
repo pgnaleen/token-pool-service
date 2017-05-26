@@ -82,7 +82,7 @@ public  class EmailManager {
 	} 
 	
 	
-    private static Logger log = LoggerFactory.getLogger(TokenManager.class);
+    private static Logger log = LoggerFactory.getLogger(EmailManager.class);
     
     /**
      * this will send Connection fail  mail to pre-configured recipients 
@@ -126,7 +126,7 @@ public  class EmailManager {
 
 		} catch (MessagingException eMessagingException) {
 
-    	    log.error("Error occoured when sent emails "+GenaralError.INTERNAL_SERVER_ERROR);
+			log.error("Error occoured when sending emails "+GenaralError.INTERNAL_SERVER_ERROR,eMessagingException);
 			return;
 		}
 

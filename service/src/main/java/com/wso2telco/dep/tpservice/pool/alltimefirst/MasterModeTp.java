@@ -69,7 +69,7 @@ class MasterModeTp extends AbstrController {
 			
 		} catch (TokenException e) {
 			ThrowableError x = e.getErrorType();
-			if (x.getCode().equals(TokenException.TokenError.CONNECTION_LOSS.getCode())) {
+			if (x.getCode().equals(TokenException.TokenError.CONNECTION_LOSS.getCode()) || x.getCode().equals(TokenException.TokenError.RESPONSE_CODE_ERROR.getCode())) {
 				whoDTO.incriseRetryAttmpt();
 
 			 whodao.incrimentRetryAttempt(whoDTO.getId(),whoDTO.getRetryAttmpt());

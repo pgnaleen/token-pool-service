@@ -11,7 +11,7 @@ CREATE TABLE `tstemail` (
   `tsxwhodid` int(11) NOT NULL,
   `tstmailaddr` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`idtstemail`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 

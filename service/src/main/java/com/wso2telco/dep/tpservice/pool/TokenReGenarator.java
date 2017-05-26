@@ -22,10 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -35,7 +38,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.Response.Status;
 
-import com.wso2telco.dep.tpservice.conf.Appinitializer;
+import com.wso2telco.dep.tpservice.conf.ConfigReader;
+import com.wso2telco.dep.tpservice.model.ConfigDTO;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +49,15 @@ import com.wso2telco.dep.tpservice.model.TokenDTO;
 import com.wso2telco.dep.tpservice.model.WhoDTO;
 import com.wso2telco.dep.tpservice.util.Constants;
 import com.wso2telco.dep.tpservice.util.Constants.AuthMethod;
-import com.wso2telco.dep.tpservice.util.exception.BusinessException;
 import com.wso2telco.dep.tpservice.util.exception.GenaralError;
 import com.wso2telco.dep.tpservice.util.exception.ThrowableError;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
 import com.wso2telco.dep.tpservice.util.exception.TokenException.TokenError;
 
 public class TokenReGenarator {
+
+	private int responseCode;
+	private ConfigReader configReader;
 
 	static {
 		// Create a trust manager that does not validate certificate chains
@@ -88,12 +95,36 @@ public class TokenReGenarator {
 	// regenerate new access token process
 	public TokenDTO reGenarate(final WhoDTO who, final TokenDTO oldToken) throws TokenException {
 
+		this.configReader = ConfigReader.getInstance();
+		ConfigDTO configDTO = configReader.getConfigDTO();
+
+		List<String> responseCodeList = Arrays.asList(configDTO.getRetryResponseCodes().split("\\s*,\\s*"));
+
+
 		final String grant_type = "grant_type=refresh_token&refresh_token=";
 		TokenDTO token = new TokenDTO();
 
 		// response containing new access & refresh token
 		String Strtoken = makeTokenrequest(who.getTokenUrl(), grant_type + oldToken.getRefreshToken(),
 				("" + oldToken.getTokenAuth()));
+
+
+		 if(responseCodeList.contains(Integer.toString(responseCode))) {
+
+			throw new TokenException(new ThrowableError() {
+
+				@Override
+				public String getMessage() {
+					return TokenException.TokenError.RESPONSE_CODE_ERROR.getMessage();
+				}
+
+				@Override
+				public String getCode() {
+					return TokenException.TokenError.RESPONSE_CODE_ERROR.getCode();
+				}
+			});
+
+		}
 
 		// validate response message
 		if (Strtoken != null && Strtoken.length() > 0) {
@@ -113,6 +144,7 @@ public class TokenReGenarator {
 						return jsontoken.getString("error");
 					}
 				});
+
 			}
 
 			String newToken = jsontoken.getString("access_token");
@@ -143,8 +175,9 @@ public class TokenReGenarator {
 		HttpsURLConnection connection = null;
 		InputStream is = null;
 		BufferedReader br = null;
+		DataOutputStream wr = null;
 
-		log.debug("url : " + tokenurl + " | urlParameters : " + urlParameters + " | authheader : " + authheader);
+		log.debug("Token regeneration requestString : tokenUrl=" + tokenurl + " | urlParameters= " + urlParameters + " | authheader= " + authheader);
 
 		// parameter validations
 		if ((tokenurl == null || tokenurl.length() <= 0)) {
@@ -183,7 +216,7 @@ public class TokenReGenarator {
 			connection.setUseCaches(false);
 
 
-			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+			wr = new DataOutputStream(connection.getOutputStream());
 			wr.write(postData);
 			wr.flush();
 			wr.close();
@@ -192,9 +225,13 @@ public class TokenReGenarator {
 			if ((connection.getResponseCode() == Status.OK.getStatusCode())
 					|| (connection.getResponseCode() == Status.CREATED.getStatusCode())) {
 				is = connection.getInputStream();
+				responseCode = connection.getResponseCode();
 			} else {
 				is = connection.getErrorStream();
+				responseCode = connection.getResponseCode();
 			}
+
+			log.info("Response Code = "+responseCode);
 
 			br = new BufferedReader(new InputStreamReader(is));
 			String output;
@@ -219,6 +256,10 @@ public class TokenReGenarator {
 					br.close();
 
 				}
+				if(wr!=null){
+
+					wr.close();
+				}
 
 			} catch (IOException e) {
 
@@ -230,7 +271,6 @@ public class TokenReGenarator {
 			}
 		}
 
-	
 		return retStr.toString();
 	}
 

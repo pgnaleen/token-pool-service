@@ -52,7 +52,8 @@ public class TokenException extends BusinessException {
 		REACH_MAX_RETRY_ATTEMPT("TPS0026", "Reach maximum retry attempt"),
 		EMPTY_SENDER_LIST("TPS0027", "Sender mail list not defined"),
 		EMAIL_SENDING_FAIL("TPS0028", "Email sending fail"),
-		NO_VALIDE_TOKEN_FOUND("TPS0029","No Valide Token Found")
+		NO_VALIDE_TOKEN_FOUND("TPS0029","No Valide Token Found"),
+		RESPONSE_CODE_ERROR("TPS0030","No valid response code")
 		;
 		
 		TokenError(final String coded,final String msgf){

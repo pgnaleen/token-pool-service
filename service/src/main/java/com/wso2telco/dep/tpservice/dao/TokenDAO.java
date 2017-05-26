@@ -159,6 +159,8 @@ public class TokenDAO {
 		TokenHandler tokenHandler = dbi.onDemand(TokenHandler.class);
 		
 		int newTokenDid = tokenHandler.createNewToken(token_obj, who_obj);
+		//set retry attempt into zero
+		who_obj.setRetryAttmpt(0);
 		//Generated token did set in to new token dto
 		token_obj.setId(newTokenDid);
 		

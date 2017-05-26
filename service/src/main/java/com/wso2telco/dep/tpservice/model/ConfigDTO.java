@@ -48,6 +48,9 @@ public class ConfigDTO extends Configuration implements Serializable{
 	private long refreshWakeUpLeadTime=5000;
 
 	@JsonProperty
+	private String retryResponseCodes;
+
+	@JsonProperty
 	private  String authType = "mail.smtp.auth";
 
 	
@@ -65,6 +68,14 @@ public class ConfigDTO extends Configuration implements Serializable{
 
 	public void setRefreshWakeUpLeadTime(long refreshWakeUpLeadTime) {
 		this.refreshWakeUpLeadTime = refreshWakeUpLeadTime;
+	}
+
+	public String getRetryResponseCodes() {
+		return retryResponseCodes;
+	}
+
+	public void setRetryResponseCodes(String retryResponseCodes) {
+		this.retryResponseCodes = retryResponseCodes;
 	}
 
 	public int getTokenReadretrAttempts() {
@@ -122,16 +133,4 @@ public class ConfigDTO extends Configuration implements Serializable{
 				+ isMaster + ", tokenReadretrAttempts=" + tokenReadretrAttempts + ", tokenReadretrAfter="
 				+ tokenReadretrAfter + ", retryAttempt=" + retryAttempt + "]";
 	}
-	
-/*	public String getHost(){
-		return host;
-	}
-	
-	public int getPort(){
-		return port;
-	}*/
-
-	
-	
-
 }
