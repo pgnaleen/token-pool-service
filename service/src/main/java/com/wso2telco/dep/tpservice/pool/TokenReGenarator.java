@@ -39,7 +39,9 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.Response.Status;
 
 import com.wso2telco.dep.tpservice.conf.ConfigReader;
+import com.wso2telco.dep.tpservice.manager.EmailManager;
 import com.wso2telco.dep.tpservice.model.ConfigDTO;
+import com.wso2telco.dep.tpservice.util.exception.BusinessException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -126,48 +128,60 @@ public class TokenReGenarator {
 
 		}
 
-		// validate response message
-		if (Strtoken != null && Strtoken.length() > 0) {
+		try {
+			// validate response message
+			if (Strtoken != null && Strtoken.length() > 0) {
 
-			JSONObject jsontoken = new JSONObject(Strtoken);
+				JSONObject jsontoken = new JSONObject(Strtoken);
 
-			if (jsontoken.has("error" )) {
-				throw new TokenException(new ThrowableError() {
+				if (jsontoken.has("error")) {
+					throw new TokenException(new ThrowableError() {
 
-					@Override
-					public String getMessage() {
-						return jsontoken.getString("error_description");
-					}
+						@Override
+						public String getMessage() {
+							return jsontoken.getString("error_description");
+						}
 
-					@Override
-					public String getCode() {
-						return jsontoken.getString("error");
-					}
-				});
+						@Override
+						public String getCode() {
+							return jsontoken.getString("error");
+						}
+					});
+
+				}
+
+				String newToken = jsontoken.getString("access_token");
+				String newRefreshToken = jsontoken.getString("refresh_token");
+				Long newTokenValidity = 1000 * jsontoken.getLong("expires_in");
+
+				token.setAccessToken(newToken);
+				token.setTokenAuth(oldToken.getTokenAuth());
+				token.setRefreshToken(newRefreshToken);
+				token.setTokenValidity(newTokenValidity);
+				token.setValid(true);
+				token.setWhoId(oldToken.getWhoId());
+				//Setting parent token id
+				token.setParentTokenId(oldToken.getId());
+
+				log.debug("Refresh token re-generation success" + token);
+
+			} else {
+				log.warn("unable to re -genarate token" + oldToken);
+				throw new TokenException(GenaralError.UNDEFINED);
 
 			}
 
-			String newToken = jsontoken.getString("access_token");
-			String newRefreshToken = jsontoken.getString("refresh_token");
-			Long newTokenValidity = 1000 * jsontoken.getLong("expires_in");
-
-			token.setAccessToken(newToken);
-			token.setTokenAuth(oldToken.getTokenAuth());
-			token.setRefreshToken(newRefreshToken);
-			token.setTokenValidity(newTokenValidity);
-			token.setValid(true);
-			token.setWhoId(oldToken.getWhoId());
-			//Setting parent token id
-			token.setParentTokenId(oldToken.getId());
-
-			log.debug("Refresh token re-generation success" +token);
-
-		} else {
+		}catch (JSONException ex){
 			log.warn("unable to re -genarate token" + oldToken);
-			throw new TokenException(GenaralError.INTERNAL_SERVER_ERROR);
+			throw new TokenException(GenaralError.UNDEFINED);
 		}
+
 		return token;
 
+	}
+
+	public int getResponseCode() {
+		return responseCode;
 	}
 
 	protected String makeTokenrequest(String tokenurl, String urlParameters, String authheader) throws TokenException {

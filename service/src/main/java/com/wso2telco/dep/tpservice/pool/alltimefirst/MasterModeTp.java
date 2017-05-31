@@ -34,13 +34,15 @@ class MasterModeTp extends AbstrController {
 	private TokenReGenarator regenarator;
 	RetryConnectionDTO retryDTO;
 	RetryConnectionDAO retryDAO;
-	private  final String MAIL_BODY_CONNECTION_LOSS = "Token genaration failed. Retry attempt :";
-	private final String MAIL_SUBJECT_CONNECTION_LOSS = "[Token Genaration Failed]- Error occurd while connecting to ";
+	private  final String MAIL_BODY_CONNECTION_LOSS = "Token generation failed. Retry attempt :";
+	private final String MAIL_SUBJECT_CONNECTION_LOSS = "[Token Generation Failed]- Error occurd while connecting to ";
 	
-	private  final String MAIL_BODY_INVALID_CREDENTIALS = "Token genaration failed.";
-	private final String MAIL_SUBJECT_INVALID_CREDENTIALS = "[Token Genaration Failed]- Credentials ";
-	private final String MAIL_SUBJECT_END_OF_RETRY =  "The reach the maximum retry attempts reached .Make sure the token endpoint is up and running"
-		+ "Re start the owners token pool manyally.";
+	private  final String MAIL_BODY_INVALID_CREDENTIALS = "Token generation failed.\nInvalid Credentials in Token Auth -  ";
+	private final String MAIL_SUBJECT_INVALID_CREDENTIALS = "[Token Generation Failed]- Invalid Credentials in ";
+	private final String MAIL_SUBJECT_END_OF_RETRY =  "The reach the maximum retry attempts reached. Make sure the token endpoint is up and running "
+		+ "Restart the owners token pool manually.";
+	private final String MAIL_SUBJECT_UNEXPECTED_ERROR = "[Token Genaration Failed]- Response Code : ";
+	private  final String MAIL_BODY_UNEXPECTED_ERROR = "Token generation failed.\nUnexpected error occurs when token generation in auth token  ";
 	
 	protected EmailManager manager;
 	protected MasterModeTp(WhoDTO whoDTO,TokenDTO tokenDTO) throws TokenException {
@@ -104,10 +106,10 @@ class MasterModeTp extends AbstrController {
 
 				reGenarate();
 
-			} else {
+			} else if(x.getCode().equals("invalid_client")) {
 
 				try {
-					manager.sendConnectionFailNotification(whoDTO,MAIL_SUBJECT_INVALID_CREDENTIALS, MAIL_BODY_INVALID_CREDENTIALS,  e);
+					manager.sendConnectionFailNotification(whoDTO,MAIL_SUBJECT_INVALID_CREDENTIALS + whoDTO.getOwnerId(), MAIL_BODY_INVALID_CREDENTIALS + tokenDTO.getTokenAuth(),  e);
 				} catch (BusinessException e1) {
 					log.error("reGenarate ",e1);
 					throw new  TokenException(TokenException.TokenError.EMAIL_SENDING_FAIL);
@@ -115,6 +117,16 @@ class MasterModeTp extends AbstrController {
 				
 				throw new TokenException(TokenException.TokenError.INVALID_REFRESH_CREDENTIALS);
 
+			}else {
+
+				try {
+					manager.sendConnectionFailNotification(whoDTO,MAIL_SUBJECT_UNEXPECTED_ERROR +regenarator.getResponseCode() +" in " +whoDTO.getOwnerId(), MAIL_BODY_UNEXPECTED_ERROR + tokenDTO.getTokenAuth(), e);
+				} catch (BusinessException e1) {
+					log.error("reGenarate ",e1);
+					throw new  TokenException(TokenException.TokenError.EMAIL_SENDING_FAIL);
+				}
+
+				throw new TokenException(TokenException.TokenError.UNEXPECTED_ERROR);
 			}
 		}
 		// throw new TokenException(e.getErrorType());

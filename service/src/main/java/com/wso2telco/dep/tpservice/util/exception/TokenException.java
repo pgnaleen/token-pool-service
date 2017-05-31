@@ -53,7 +53,8 @@ public class TokenException extends BusinessException {
 		EMPTY_SENDER_LIST("TPS0027", "Sender mail list not defined"),
 		EMAIL_SENDING_FAIL("TPS0028", "Email sending fail"),
 		NO_VALIDE_TOKEN_FOUND("TPS0029","No Valide Token Found"),
-		RESPONSE_CODE_ERROR("TPS0030","No valid response code")
+		RESPONSE_CODE_ERROR("TPS0030","No valid response code"),
+		UNEXPECTED_ERROR("TPS0031","Unexpected error")
 		;
 		
 		TokenError(final String coded,final String msgf){

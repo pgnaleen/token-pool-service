@@ -268,5 +268,13 @@ Email will be generated each retry attempt and once maximum retry limit reached.
 
 Configured mail address(es) will be received all mails generated.
 
+Emails send using 3 different subject, and email body give the error description and application details :
+
+- [Token Generation Failed]- Error occurs while connecting to "operator name"
+- [Token Genaration Failed]- Error Code : "response code" in "operator name"
+- [Token Generation Failed]- Invalid Credentials in "operator name"
+
+
+
 ### 7 Limitations
  HA not supported. Only single master node allowed to start.

@@ -89,7 +89,7 @@ public  class EmailManager {
      * @param tokenOwner
      * @throws BusinessException
      */
-    public void sendConnectionFailNotification(WhoDTO tokenOwner,String subject,String msg, TokenException e) throws BusinessException{
+    public void sendConnectionFailNotification(WhoDTO tokenOwner,String subject,String msg, Exception e) throws BusinessException{
     	
     	try {
     		
