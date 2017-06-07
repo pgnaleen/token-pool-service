@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 class MasterModeTp extends AbstrController {
 
 	private TokenReGenarator regenarator;
+	private TokenDTO newlyGeneratedToken;
 	RetryConnectionDTO retryDTO;
 	RetryConnectionDAO retryDAO;
 	private  final String MAIL_BODY_CONNECTION_LOSS = "Token generation failed. Retry attempt :";
@@ -68,6 +69,7 @@ class MasterModeTp extends AbstrController {
 			newTokenDTO = regenarator.reGenarate(whoDTO, tokenDTO);
 
 			tokenManager.saveToken(whoDTO, newTokenDTO);
+			setNewlyGeneratedToken(newTokenDTO);
 			
 		} catch (TokenException e) {
 			ThrowableError x = e.getErrorType();
@@ -130,10 +132,17 @@ class MasterModeTp extends AbstrController {
 			}
 		}
 		// throw new TokenException(e.getErrorType());
-		return newTokenDTO;
+		return getNewlyGeneratedToken();
 
 	}
 
+	private TokenDTO getNewlyGeneratedToken() {
+		return newlyGeneratedToken;
+	}
+
+	private void setNewlyGeneratedToken(TokenDTO newlyGeneratedToken) {
+		this.newlyGeneratedToken = newlyGeneratedToken;
+	}
 }
 
 
