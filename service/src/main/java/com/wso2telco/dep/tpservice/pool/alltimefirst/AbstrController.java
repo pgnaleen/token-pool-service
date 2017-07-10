@@ -88,6 +88,7 @@ abstract class AbstrController implements TokenControllable{
 		TokenDTO newtokenDTo = reGenarate();
 		//Swap oldtoken with newly generated one
 		setNewToken(newtokenDTo);
+		shedule();
 		return newtokenDTo;
 	}
 	//Swap oldtoken with newly generated one
