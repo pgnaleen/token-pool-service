@@ -102,7 +102,7 @@ public class TokenDAO {
 			int id = (Integer)resultsMap.get("tokendid");
 			int whoId = (Integer)resultsMap.get("tsxwhodid");
 			String tokenAuth = (String)resultsMap.get("tokenauth");
-			Long tokenValidity = (Long)resultsMap.get("tokenvalidity");
+			Long tokenValidity = new Long((Integer)resultsMap.get("tokenvalidity"));
 			String accessToken = (String)resultsMap.get("accesstoken");
 			String refreshToken = (String)resultsMap.get("refreshtoken");
 			//Timestamp lastRefreshDone = (Timestamp)resultsMap.get("lastrefreshdone");
