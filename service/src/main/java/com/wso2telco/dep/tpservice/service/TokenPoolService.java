@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.wso2telco.dep.tpservice.rest;
+package com.wso2telco.dep.tpservice.service;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;

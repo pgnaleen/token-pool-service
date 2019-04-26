@@ -18,7 +18,7 @@ package com.wso2telco.dep.tpservice.conf;
 
 import com.wso2telco.dep.tpservice.model.ConfigDTO;
 import com.wso2telco.dep.tpservice.pool.PoolFactory;
-import com.wso2telco.dep.tpservice.rest.TokenPoolService;
+import com.wso2telco.dep.tpservice.service.TokenPoolService;
 import com.wso2telco.dep.tpservice.util.exception.TokenException;
 import io.dropwizard.Application;
 import io.dropwizard.jetty.ConnectorFactory;
